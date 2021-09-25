@@ -36,7 +36,7 @@ namespace FundooNotes.Controllers
 
 
         // GET: api/user
-        [HttpGet]
+        [HttpGet("user")]
         public IActionResult Get()
         {
             IEnumerable<User> user = userBL.GetAll();
@@ -159,7 +159,7 @@ namespace FundooNotes.Controllers
 
         }
 
-        [HttpPost("forgot/password")]
+        [HttpPost("forgotpassword")]
         public IActionResult ForgotPassword(ForgotPasswordModel model)
         {
             try
@@ -186,7 +186,7 @@ namespace FundooNotes.Controllers
         }
 
 
-
+        [HttpGet]
         public long GetTokenId()
         {
             return Convert.ToInt64(User.FindFirst("Id").Value);

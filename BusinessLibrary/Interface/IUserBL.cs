@@ -16,8 +16,7 @@ namespace BusinessLibrary.Interface
         ResponseModel Login(LoginModel loginModel);
 
         bool Register(RegisterModel user);
-
-        
+       
 
         bool ResetPassword(ResetPasswordModel resetPasswordModel, long userId);
 

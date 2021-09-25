@@ -54,7 +54,7 @@ namespace CommonLayer
 
 
             }
-            catch (MessageQueueException qexception)
+            catch (MessageQueueException exception)
             {
                 throw;
             }
@@ -69,7 +69,7 @@ namespace CommonLayer
                 mail.From = new MailAddress("bhavishkukreja16@gmail.com");
                 mail.To.Add("bhavishkukreja16@gmail.com");
                 mail.Subject = "Hello World";
-                //mail.Body = "Please<a href='" + link +  "'>" + tokenId + "</a> ";
+               
                 mail.Body = "CLICK HERE TO RESET PASSWORD!!<br></br><a href='http://" + final + "'>click here</a>";
                 mail.IsBodyHtml = true;
 
