@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using CommonLayer;
+using MimeKit;
+
+
 
 namespace FundooNotes.Controllers
 {
@@ -51,14 +55,14 @@ namespace FundooNotes.Controllers
             return Ok(user);
         }
         // POST: api/user
-        [HttpPost]
-        public IActionResult Post(RegisterModel user)
+        [HttpPost("register")]
+        public IActionResult Register(RegisterModel user)
         {
             if (user == null)
             {
                 return BadRequest("Employee is null.");
             }
-            var result = userBL.Add(user);
+            var result = userBL.Register(user);
             if (result == true)
             {
                 return this.Ok(new { success = true, message = "User successfully Registered" });
@@ -79,7 +83,7 @@ namespace FundooNotes.Controllers
                 {
                     return BadRequest("Employee is null.");
                 }
-                ResponseModel responseModel = userBL.Get(loginModel);
+                ResponseModel responseModel = userBL.Login(loginModel);
 
                 if (responseModel == null)
                 {
@@ -155,6 +159,34 @@ namespace FundooNotes.Controllers
 
         }
 
+        [HttpPost("forgot/password")]
+        public IActionResult ForgotPassword(ForgotPasswordModel model)
+        {
+            try
+            {
+                ResponseModel response = userBL.ForgotPassword(model);
+                if (response.FirstName == null && response.LastName == null)
+                {
+                    return this.NotFound(new { success = false, message = "The mail is not valid" });
+                }
+                else
+                {
+                    string token = GenerateJwtToken(response.UserId, response.Email);
+                    new MsmqOperation().SendData(token);
+
+                    return Ok(new { success = true, message = "The Reset Password  Link has been sent to you succesfully" });
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
         public long GetTokenId()
         {
             return Convert.ToInt64(User.FindFirst("Id").Value);
@@ -162,36 +194,5 @@ namespace FundooNotes.Controllers
 
     }
 
-
-
-
-    // PUT: api/Employee/5
-    //[HttpPut("{id}")]
-    //public IActionResult Put(long id, [FromBody] User user)
-    //{
-    //    if (user == null)
-    //    {
-    //        return BadRequest("Employee is null.");
-    //    }
-    //    User userToUpdate = userBL.Get(id);
-    //    if (userToUpdate == null)
-    //    {
-    //        return NotFound("The Employee record couldn't be found.");
-    //    }
-    //    userBL.Update(userToUpdate, user);
-    //    return NoContent();
-    //}
-    // DELETE: api/Employee/5
-    //[HttpDelete("{id}")]
-    //public IActionResult Delete(long id)
-    //{
-    //    User user = userBL.Get(id);
-    //    if (user == null)
-    //    {
-    //        return NotFound("The Employee record couldn't be found.");
-    //    }
-    //    userBL.Delete(user);
-    //    return NoContent();
-    //}
 
 }

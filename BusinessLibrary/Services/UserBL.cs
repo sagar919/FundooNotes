@@ -5,6 +5,15 @@ using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using MimeKit;
+using System.IO;
+
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Options;
+using CommonLayer.Model;
+
 
 namespace BusinessLibrary.Services
 {
@@ -16,11 +25,11 @@ namespace BusinessLibrary.Services
             this._userRL = userRL;
         }
 
-        public bool Add(RegisterModel user)
+        public bool Register(RegisterModel user)
         {
             try
             {
-                return this._userRL.Add(user);
+                return this._userRL.Register(user);
             }
             catch (Exception ex)
             {
@@ -28,16 +37,19 @@ namespace BusinessLibrary.Services
             }
         }
 
-        public bool Add(LoginModel loginModel)
+       
+
+        public ResponseModel ForgotPassword(ForgotPasswordModel model)
         {
             try
             {
-                return this._userRL.Add(loginModel);
+                return this._userRL.ForgotPassword(model);
             }
             catch (Exception ex)
             {
                 throw;
             }
+
         }
 
         public User Get(long id)
@@ -52,11 +64,11 @@ namespace BusinessLibrary.Services
             }
         }
 
-        public ResponseModel Get(LoginModel loginModel)
+        public ResponseModel Login(LoginModel loginModel)
         {
             try
             {
-                return this._userRL.Get(loginModel);
+                return this._userRL.Login(loginModel);
             }
             catch (Exception ex)
             {
@@ -87,6 +99,11 @@ namespace BusinessLibrary.Services
                 throw;
             }
         }
+
+       
     }
 
+
+
+   
 }

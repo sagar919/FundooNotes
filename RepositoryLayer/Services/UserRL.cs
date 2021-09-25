@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Services
 {
@@ -17,7 +18,7 @@ namespace RepositoryLayer.Services
         {
             _userContext = context;
         }
-        public bool Add(RegisterModel user)
+        public bool Register(RegisterModel user)
         {
             User userEntity = new User();
             userEntity.FirstName = user.FirstName;
@@ -37,37 +38,43 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public bool Add(LoginModel loginModel)
+      
+
+        public ResponseModel ForgotPassword(ForgotPasswordModel model)
         {
-            User userEntity = new User();
-
-            userEntity.Email = loginModel.Email;
-            userEntity.Password = loginModel.Password;
-
-            _userContext.Users.Add(userEntity);
-            int result = _userContext.SaveChanges();
-            if (result > 0)
+            try
             {
-                return true;
+                User user = _userContext.Users.FirstOrDefault(e => e.Email == model.Email);
+                if (user != null)
+                {
+                    ResponseModel response = new ResponseModel();
+                    response.Email = user.Email;
+                    response.UserId = user.UserId;
+                    response.FirstName = user.FirstName;
+                    response.LastName = user.LastName;
+                    return response;
+                }
+                else
+                {
+                    return null;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+
+                throw;
             }
         }
 
-        //public void Delete(User user)
-        //{
-        //    _userContext.Users.Remove(user);
-        //    _userContext.SaveChanges();
-        //}
+    
 
         public User Get(long id)
         {
             return _userContext.Users.FirstOrDefault(e => e.UserId == id);
         }
 
-        public ResponseModel Get(LoginModel loginModel)
+        public ResponseModel Login(LoginModel loginModel)
         {
 
             try
@@ -96,6 +103,7 @@ namespace RepositoryLayer.Services
             return _userContext.Users.ToList();
         }
 
+        
         public bool ResetPassword(ResetPasswordModel resetPasswordModel, long userId)
         {
             User user = _userContext.Users.FirstOrDefault(e => e.UserId == userId);
@@ -122,15 +130,6 @@ namespace RepositoryLayer.Services
             }
         }
 
-        //public void Update(User user, User user1)
-        //{
-        //    user.FirstName = user1.FirstName;
-        //    user.LastName = user1.LastName;
-        //    user.Email = user1.Email;
-        //    user.Password = user1.Password;
-        //    user.CreatedAt = user1.CreatedAt;
-        //    user.ModifiedAt = user1.ModifiedAt;
-        //    _userContext.SaveChanges();
-        //}
+       
     }
 }

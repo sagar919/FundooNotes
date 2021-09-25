@@ -43,7 +43,8 @@ namespace RepositoryLayer.Context
                 Password = "1234",
                 CreatedAt = new DateTime(2020, 02, 02),
                 ModifiedAt = new DateTime(2020, 02, 02)
-            });
+            }
+            );
 
 
         }

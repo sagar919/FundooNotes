@@ -1,27 +1,22 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using RepositoryLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Services;
-
-using RepositoryLayer.Entity;
 using BusinessLibrary.Interface;
 using BusinessLibrary.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using CommonLayer.Model;
+
+
+
 
 namespace FundooNotes
 {
@@ -59,6 +54,7 @@ namespace FundooNotes
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])) //Configuration["JwtToken:SecretKey"]  
                 };
             });
+
 
 
             services.AddSwaggerGen(swagger =>
@@ -120,11 +116,13 @@ namespace FundooNotes
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", ""));
+            //app.UseSwaggerUI(c =>
+            //{
+                
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
 
-            });
+            //});
 
             app.UseEndpoints(endpoints =>
             {
