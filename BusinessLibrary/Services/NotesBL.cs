@@ -23,11 +23,11 @@ namespace BusinessLayer.Services
             return _notesRL.CreateNotes(model);
         }
 
-        public IEnumerable<Notes> GetAll()
+        public IEnumerable<Notes> DisplayNotes()
         {
             try
             {
-                return this._notesRL.GetAll();
+                return this._notesRL.DisplayNotes();
             }
             catch (Exception ex)
             {

@@ -11,6 +11,6 @@ namespace BusinessLayer.Interface
     {
         bool CreateNotes(AddNotesModel model);
 
-        IEnumerable<Notes> GetAll();
+        IEnumerable<Notes> DisplayNotes();
     }
 }

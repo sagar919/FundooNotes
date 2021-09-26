@@ -45,10 +45,10 @@ namespace FundooNotes.Controllers
         }
 
         // GET: api/user
-        [HttpGet("getNotes")]
-        public IActionResult GetAll()
+        [HttpGet("DisplayNotes")]
+        public IActionResult DisplayNotes()
         {
-            IEnumerable<Notes> notes = _notesBL.GetAll();
+            IEnumerable<Notes> notes = _notesBL.DisplayNotes();
             return Ok(notes);
         }
     }

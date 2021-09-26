@@ -10,6 +10,6 @@ namespace RepositoryLayer.Interface
     {
         bool CreateNotes(AddNotesModel model);
 
-        IEnumerable<Notes> GetAll();
+        IEnumerable<Notes> DisplayNotes();
     }
 }
