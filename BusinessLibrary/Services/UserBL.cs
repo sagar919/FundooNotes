@@ -4,22 +4,13 @@ using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using MimeKit;
-using System.IO;
-
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.Extensions.Options;
-using CommonLayer.Model;
 
 
 namespace BusinessLibrary.Services
 {
     public class UserBL : IUserBL
     {
-        private IUserRL _userRL;
+        private readonly IUserRL _userRL;
         public UserBL(IUserRL userRL)
         {
             this._userRL = userRL;

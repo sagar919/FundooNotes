@@ -1,4 +1,5 @@
 ﻿
+using CommonLayer.Model.NotesModels;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Entity;
 using System;
@@ -17,6 +18,9 @@ namespace RepositoryLayer.Context
 
         }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Notes> Notes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +47,28 @@ namespace RepositoryLayer.Context
                 ModifiedAt = new DateTime(2020, 02, 02)
             }
             );
+
+            modelBuilder.Entity<Notes>()
+
+                .HasData(new Notes
+            {
+                Id = 1,
+                Title = "FirstNote",
+                Message = "This is my first note",
+                Image = "image1",
+                Color = "Blue",
+                IsPin = false,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                AddReminder = DateTime.MinValue,
+                UserId = 1,
+                IsArchive = false,
+                IsNote = false,
+                IsTrash = false,
+
+            });
+
+            
 
 
         }
