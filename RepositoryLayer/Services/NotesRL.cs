@@ -48,9 +48,33 @@ namespace RepositoryLayer.Services
 
         }
 
-        public IEnumerable<Notes> DisplayNotes()
+        public bool Delete(Notes notes)
+        {
+            _userContext.Notes.Remove(notes);
+            var result = _userContext.SaveChanges();
+
+            if (result > 0)
+            {
+                return true;
+
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+    
+
+    public IEnumerable<Notes> DisplayNotes()
         {
             return _userContext.Notes.ToList();
+        }
+
+        public Notes Get(long Id)
+        {
+           return _userContext.Notes.FirstOrDefault(e => e.Id == Id);
+            
         }
     }
 }

@@ -15,15 +15,15 @@ namespace FundooNotes.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
-       
 
-       
+
+
         private readonly INotesBL _notesBL;
 
         public NotesController(INotesBL notesBL)
         {
             _notesBL = notesBL;
-            
+
         }
 
         [HttpPost("createNotes")]
@@ -51,7 +51,28 @@ namespace FundooNotes.Controllers
             IEnumerable<Notes> notes = _notesBL.DisplayNotes();
             return Ok(notes);
         }
+
+
+        [HttpDelete("delete/{Id}")]
+        public IActionResult DeleteNotes(long Id)
+        {
+            Notes notes = _notesBL.Get(Id);
+            if (notes == null)
+            {
+                return NotFound("The Employee record couldn't be found.");
+            }
+            var result = _notesBL.Delete(notes);
+
+            if (result == true)
+            {
+                return this.Ok(new { success = true, message = "Notes Deleted Successfully" });
+            }
+            else
+            {
+                return this.BadRequest(new { success = false, message = "Note Deletion Failed" });
+            }
+        }
+
+
     }
-        
-    
 }
