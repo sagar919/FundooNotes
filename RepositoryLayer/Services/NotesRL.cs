@@ -150,5 +150,32 @@ namespace RepositoryLayer.Services
            return _userContext.Notes.FirstOrDefault(e => e.Id == Id);
             
         }
+
+        public bool TrashNote(long Id)
+        {
+            Notes notes = _userContext.Notes.FirstOrDefault(e => e.Id == Id);
+            if (notes.IsTrash == false)
+            {
+
+                notes.IsTrash = true;
+
+            }
+            else
+            {
+
+                notes.IsTrash = false;
+
+            }
+            _userContext.Notes.Update(notes);
+            int result = _userContext.SaveChanges();
+            if (result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -150,20 +150,20 @@ namespace FundooNotes.Controllers
             }
         }
 
-        //// Change isTrash status
-        //[HttpPut("Trash/{Id}")]
-        //public IActionResult TrashNote(long Id)
-        //{
-        //    var result = _notesBL.TrashNote(Id);
-        //    if (result == true)
-        //    {
-        //        return this.Ok(new { success = true, message = "IsTarsh successfull" });
-        //    }
-        //    else
-        //    {
-        //        return this.BadRequest(new { success = false, message = "IsTrash unsuccessfull" });
-        //    }
-        //}
+        // Change isTrash status
+        [HttpPut("Trash/{Id}")]
+        public IActionResult TrashNote(long Id)
+        {
+            var result = _notesBL.TrashNote(Id);
+            if (result == true)
+            {
+                return this.Ok(new { success = true, message = "IsTarsh successfull" });
+            }
+            else
+            {
+                return this.BadRequest(new { success = false, message = "IsTrash unsuccessfull" });
+            }
+        }
 
 
 

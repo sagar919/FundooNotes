@@ -21,5 +21,7 @@ namespace RepositoryLayer.Interface
         bool ArchiveNote(long Id);
 
         bool ChangeColor(long Id, ChangeColorModel changeColorModel);
+
+        bool TrashNote(long Id);
     }
 }
