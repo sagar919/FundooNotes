@@ -165,6 +165,21 @@ namespace FundooNotes.Controllers
             }
         }
 
+        // Change isPin status
+        [HttpPut("Pin/{Id}")]
+        public IActionResult PinNote(long Id)
+        {
+            var result = _notesBL.PinNote(Id);
+            if (result == true)
+            {
+                return this.Ok(new { success = true, message = "IsPin successfull" });
+            }
+            else
+            {
+                return this.BadRequest(new { success = false, message = "IsPin unsuccessfull" });
+            }
+        }
+
 
 
     }

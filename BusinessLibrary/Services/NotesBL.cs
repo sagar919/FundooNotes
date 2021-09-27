@@ -94,6 +94,18 @@ namespace BusinessLayer.Services
             }
         }
 
+        public bool PinNote(long Id)
+        {
+            try
+            {
+                return this._notesRL.PinNote(Id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public bool TrashNote(long Id)
         {
             try

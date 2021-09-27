@@ -23,5 +23,7 @@ namespace RepositoryLayer.Interface
         bool ChangeColor(long Id, ChangeColorModel changeColorModel);
 
         bool TrashNote(long Id);
+
+        bool PinNote(long Id);
     }
 }
