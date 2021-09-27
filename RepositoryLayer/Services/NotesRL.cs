@@ -17,6 +17,52 @@ namespace RepositoryLayer.Services
             _userContext = context;
         }
 
+        public bool ArchiveNote(long Id)
+        {
+            Notes notes = _userContext.Notes.FirstOrDefault(e => e.Id == Id);
+            if (notes.IsArchive == false)
+            {
+
+                notes.IsArchive = true;
+
+            }
+            else
+            {
+
+                notes.IsArchive = false;
+
+            }
+            _userContext.Notes.Update(notes);
+            int result = _userContext.SaveChanges();
+            if (result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeColor(long Id, ChangeColorModel changeColorModel)
+        {
+            Notes notes = _userContext.Notes.FirstOrDefault(e => e.Id == Id);
+            notes.Color = changeColorModel.Color;
+
+
+            _userContext.Notes.Update(notes);
+            int result = _userContext.SaveChanges();
+            if (result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+      
 
         public bool CreateNotes(AddNotesModel model)
         {

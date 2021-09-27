@@ -17,6 +17,29 @@ namespace BusinessLayer.Services
             this._notesRL = notesRL;
         }
 
+        public bool ArchiveNote(long Id)
+        {
+            try
+            {
+                return this._notesRL.ArchiveNote( Id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public bool ChangeColor(long Id, ChangeColorModel changeColorModel)
+        {
+            try
+            {
+                return this._notesRL.ChangeColor(Id, changeColorModel);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         public bool CreateNotes(AddNotesModel model)
         {
