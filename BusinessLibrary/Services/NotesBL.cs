@@ -47,6 +47,18 @@ namespace BusinessLayer.Services
             }
         }
 
+        public bool EditNotes(EditNotesModel editNotesModel, long Id)
+        {
+            try
+            {
+                return this._notesRL.EditNotes(editNotesModel,Id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public Notes Get(long Id)
         {
             try

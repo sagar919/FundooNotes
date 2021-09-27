@@ -20,7 +20,7 @@ namespace RepositoryLayer.Entity
         public DateTime ModifiedDate { get; set; }
         public DateTime AddReminder { get; set; }
         [ForeignKey("Users")]
-        public long UserId { get; set; }     /// foreign key..
+        public long UserId { get; set; }    
         public bool IsArchive { get; set; }
         public bool IsNote { get; set; }
         public bool IsTrash { get; set; }

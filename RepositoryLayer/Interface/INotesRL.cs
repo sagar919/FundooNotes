@@ -15,5 +15,7 @@ namespace RepositoryLayer.Interface
         Notes Get(long Id);
 
         bool Delete(Notes notes);
+
+        bool EditNotes(EditNotesModel editNotesModel, long Id);
     }
 }

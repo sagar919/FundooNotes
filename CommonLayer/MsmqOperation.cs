@@ -66,8 +66,8 @@ namespace CommonLayer
                 var tokenId = token;
                 var link = "localhost:44337/api/user/resetpassword/";
                 var final = link + tokenId;
-                mail.From = new MailAddress("bhavishkukreja16@gmail.com");
-                mail.To.Add("bhavishkukreja16@gmail.com");
+                mail.From = new MailAddress("netfreak.max@gmail.com");
+                mail.To.Add("netfreak.max@gmail.com");
                 mail.Subject = "Hello World";
                
                 mail.Body = "CLICK HERE TO RESET PASSWORD!!<br></br><a href='http://" + final + "'>click here</a>";
@@ -76,7 +76,7 @@ namespace CommonLayer
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("bhavishkukreja16@gmail.com", "942240Bhavish@");
+                    smtp.Credentials = new NetworkCredential("netfreak.max@gmail.com", "942240Bhavish@");
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
                 }
