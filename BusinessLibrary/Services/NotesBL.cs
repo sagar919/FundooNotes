@@ -17,6 +17,20 @@ namespace BusinessLayer.Services
             this._notesRL = notesRL;
         }
 
+       
+        public bool AddRemainder(long Id, AddRemainderModel addReminderModel)
+            {
+                try
+                {
+                    return this._notesRL.AddRemainder(Id, addReminderModel);
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+        
+
         public bool ArchiveNote(long Id)
         {
             try

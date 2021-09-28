@@ -7,8 +7,7 @@ namespace RepositoryLayer.Entity
 {
     public class Category
     {
-        [ForeignKey("Notes")]
-
+        [ForeignKey("Users")]
         public int Id { get; set; }
 
         public string Name { get; set; }

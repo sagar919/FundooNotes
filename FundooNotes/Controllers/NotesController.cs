@@ -263,6 +263,29 @@ namespace FundooNotes.Controllers
             }
         }
 
+        //Add reminder
+        [HttpPut("{Id}/addreminder")]
+        public IActionResult AddReminder(long Id, AddRemainderModel addReminderModel)
+        {
+            try
+            {
+                var result = _notesBL.AddRemainder(Id, addReminderModel);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Reminder Added Successfully " });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Reminder adding unsuccessfull" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return this.BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
 
 
     }

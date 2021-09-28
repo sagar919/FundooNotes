@@ -27,5 +27,7 @@ namespace RepositoryLayer.Interface
         bool PinNote(long Id);
 
         IEnumerable<Notes> NotesByCategory( string Category, long userId);
+
+        bool AddRemainder(long Id, AddRemainderModel addRemainderModel);
     }
 }

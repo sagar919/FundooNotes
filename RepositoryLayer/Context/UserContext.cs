@@ -74,7 +74,7 @@ namespace RepositoryLayer.Context
                 });
 
             modelBuilder.Entity<Category>().HasData(
-               new Category { Id = 1, Name = "Public" },
+               new Category {Id = 1, Name = "Public" },
                new Category { Id = 2, Name = "Private" },
                new Category { Id = 3, Name = "Default" });
 

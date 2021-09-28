@@ -17,6 +17,34 @@ namespace RepositoryLayer.Services
             _userContext = context;
         }
 
+        public bool AddRemainder(long Id, AddRemainderModel addRemainderModel)
+        {
+            try
+            {
+                Notes notes = _userContext.Notes.FirstOrDefault(e => e.Id == Id);
+                notes.AddReminder = addRemainderModel.AddReminder;
+                notes.ModifiedDate = DateTime.Now;
+
+
+
+                _userContext.Notes.Update(notes);
+                int result = _userContext.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
         public bool ArchiveNote(long Id)
         {
             try
