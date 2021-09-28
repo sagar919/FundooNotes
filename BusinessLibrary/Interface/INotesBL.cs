@@ -26,5 +26,7 @@ namespace BusinessLayer.Interface
         bool TrashNote(long Id);
 
         bool PinNote(long Id);
+
+        IEnumerable<Notes> NotesByCategory( string Category, long userId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model.NotesModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,7 @@ namespace FundooNotes.Controllers
 
     [Route("api/notes")]
     [ApiController]
+    [Authorize]
     public class NotesController : ControllerBase
     {
         public static IConfiguration _config;
@@ -29,52 +31,77 @@ namespace FundooNotes.Controllers
         }
 
         //Create Notes
-        [HttpPost("createNotes")]
+        [HttpPost]
         public IActionResult CreateNotes(AddNotesModel model)
         {
-            if (model == null)
+            try
             {
-                return BadRequest("notes is empty.");
+
+                if (model == null)
+                {
+                    return BadRequest("notes is empty.");
+                }
+                var result = _notesBL.CreateNotes(model);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Note Created Successfully" });
+                }
+                else
+                {
+                    return this.BadRequest();
+                }
             }
-            var result = _notesBL.CreateNotes(model);
-            if (result == true)
+            catch (Exception ex)
             {
-                return this.Ok(new { success = true, message = "Note Created Successfully" });
-            }
-            else
-            {
-                return this.BadRequest();
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 
         //Display Notes
         // GET: api/user
-        [HttpGet("DisplayNotes")]
+        [HttpGet]
         public IActionResult DisplayNotes()
         {
-            IEnumerable<Notes> notes = _notesBL.DisplayNotes();
-            return Ok(notes);
+            try
+            {
+                IEnumerable<Notes> notes = _notesBL.DisplayNotes();
+                return Ok(notes);
+            }
+            catch (Exception ex)
+            {
+
+                return this.BadRequest(new { success = false, message = ex.Message });
+            }
         }
 
 
         //Delete Notes
-        [HttpDelete("delete/{Id}")]
+        [HttpDelete("{Id}/delete")]
         public IActionResult DeleteNotes(long Id)
         {
-            Notes notes = _notesBL.Get(Id);
-            if (notes == null)
+            try
             {
-                return NotFound("The Employee record couldn't be found.");
-            }
-            var result = _notesBL.Delete(notes);
+                Notes notes = _notesBL.Get(Id);
+                if (notes == null)
+                {
+                    return NotFound("The Employee record couldn't be found.");
+                }
+                var result = _notesBL.Delete(notes);
 
-            if (result == true)
-            {
-                return this.Ok(new { success = true, message = "Notes Deleted Successfully" });
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Notes Deleted Successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Note Deletion Failed" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "Note Deletion Failed" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
         //Generate JWT token
@@ -85,7 +112,7 @@ namespace FundooNotes.Controllers
 
             var permClaims = new List<Claim>();
             permClaims.Add(new Claim("Id", Id.ToString()));
-         
+
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
@@ -96,42 +123,57 @@ namespace FundooNotes.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        //Get Token
-        [HttpGet("getTokenId")]
-        public long GetTokenId()
+        //Get Token      
+        private long GetTokenId()
         {
             return Convert.ToInt64(User.FindFirst("Id").Value);
         }
 
         //Edit Notes
-        [HttpPut("Edit/{Id}")]
+        [HttpPut("{Id}/Edit")]
         public IActionResult EditNotes(EditNotesModel editNotesModel, long Id)
         {
-           
-            var result = _notesBL.EditNotes(editNotesModel, Id);
-            if (result == true)
+
+            try
             {
-                return this.Ok(new { success = true, message = "Notes Edited Successfully" });
+                var result = _notesBL.EditNotes(editNotesModel, Id);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Notes Edited Successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Note Edition Failed" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "Note Edition Failed" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 
 
         // Archive Notes
-        [HttpPut("archive/{Id}")]
-        public IActionResult ArchiveNote( long Id)
+        [HttpPut("{Id}/archive")]
+        public IActionResult ArchiveNote(long Id)
         {
-            var result = _notesBL.ArchiveNote( Id);
-            if (result == true)
+            try
             {
-                return this.Ok(new { success = true, message = "IsArchive function successfull" });
+                var result = _notesBL.ArchiveNote(Id);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "IsArchive function successfull" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "IsArchive function unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "IsArchive function unsuccessfull" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -139,14 +181,22 @@ namespace FundooNotes.Controllers
         [HttpPut("color/{Id}")]
         public IActionResult ChangeColor(long Id, ChangeColorModel changeColorModel)
         {
-            var result = _notesBL.ChangeColor(Id, changeColorModel);
-            if (result == true)
+            try
             {
-                return this.Ok(new { success = true, message = "Color change successfully completed" });
+                var result = _notesBL.ChangeColor(Id, changeColorModel);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Color change successfully completed" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Color Change unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "Color Change unsuccessfull" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -154,14 +204,22 @@ namespace FundooNotes.Controllers
         [HttpPut("Trash/{Id}")]
         public IActionResult TrashNote(long Id)
         {
-            var result = _notesBL.TrashNote(Id);
-            if (result == true)
+            try
             {
-                return this.Ok(new { success = true, message = "IsTarsh successfull" });
+                var result = _notesBL.TrashNote(Id);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "IsTarsh successfull" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "IsTrash unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "IsTrash unsuccessfull" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -169,14 +227,39 @@ namespace FundooNotes.Controllers
         [HttpPut("Pin/{Id}")]
         public IActionResult PinNote(long Id)
         {
-            var result = _notesBL.PinNote(Id);
-            if (result == true)
+            try
             {
-                return this.Ok(new { success = true, message = "IsPin successfull" });
+                var result = _notesBL.PinNote(Id);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "IsPin successfull" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "IsPin unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "IsPin unsuccessfull" });
+
+                return this.BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        //Get Notes by category
+        [HttpGet("{Category}")]
+        public IActionResult NotesByCategory(string Category)
+        {
+            try
+            {
+                long userId = GetTokenId();
+                IEnumerable<Notes> Notes = _notesBL.NotesByCategory(Category, userId);
+                return Ok(Notes);
+            }
+            catch (Exception ex)
+            {
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
         }
 

@@ -42,34 +42,51 @@ namespace FundooNotes.Controllers
             IEnumerable<User> user = userBL.GetAll();
             return Ok(user);
         }
+
         // GET: api/Employee/5
         [Authorize]
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(long id)
         {
-            User user = userBL.Get(id);
-            if (user == null)
+            try
             {
-                return NotFound("The User record couldn't be found.");
+                User user = userBL.Get(id);
+                if (user == null)
+                {
+                    return NotFound("The User record couldn't be found.");
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            catch (Exception ex)
+            {
+
+                return this.BadRequest(new { success = false, message = ex.Message });
+            }
         }
         // POST: api/user
         [HttpPost("register")]
         public IActionResult Register(RegisterModel user)
         {
-            if (user == null)
+            try
             {
-                return BadRequest("Employee is null.");
+                if (user == null)
+                {
+                    return BadRequest("Employee is null.");
+                }
+                var result = userBL.Register(user);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "User successfully Registered" });
+                }
+                else
+                {
+                    return this.BadRequest();
+                }
             }
-            var result = userBL.Register(user);
-            if (result == true)
+            catch (Exception ex)
             {
-                return this.Ok(new { success = true, message = "User successfully Registered" });
-            }
-            else
-            {
-                return this.BadRequest();
+
+                return this.BadRequest(new { success = false, message = ex.Message });
             }
 
         }
@@ -186,8 +203,8 @@ namespace FundooNotes.Controllers
         }
 
 
-        [HttpGet]
-        public long GetTokenId()
+       
+       private long GetTokenId()
         {
             return Convert.ToInt64(User.FindFirst("Id").Value);
         }

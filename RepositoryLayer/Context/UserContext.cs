@@ -21,6 +21,9 @@ namespace RepositoryLayer.Context
 
         public DbSet<Notes> Notes { get; set; }
 
+        public DbSet<Category> Category { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,28 +54,37 @@ namespace RepositoryLayer.Context
             modelBuilder.Entity<Notes>()
 
                 .HasData(new Notes
-            {
-                Id = 1,
-                Title = "FirstNote",
-                Message = "This is my first note",
-                Image = "image1",
-                Color = "Blue",
-                IsPin = false,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                AddReminder = DateTime.MinValue,
-                UserId = 1,
-                IsArchive = false,
-                IsNote = false,
-                IsTrash = false,
+                {
+                    Id = 1,
+                    Category = "public",
+                    Title = "FirstNote",
+                    Message = "This is my first note",
+                    Image = "image1",
+                    Color = "Blue",
+                    IsPin = false,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    AddReminder = DateTime.MinValue,
+                    UserId = 1,
+                    IsArchive = false,
+                    IsNote = false,
+                    IsTrash = false,
+                   
 
-            });
+                });
 
-            
+            modelBuilder.Entity<Category>().HasData(
+               new Category { Id = 1, Name = "Public" },
+               new Category { Id = 2, Name = "Private" },
+               new Category { Id = 3, Name = "Default" });
+
+
+
+
 
 
         }
-        
+
     }
     
 }

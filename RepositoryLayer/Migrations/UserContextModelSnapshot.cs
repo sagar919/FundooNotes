@@ -19,6 +19,38 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("RepositoryLayer.Entity.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Public"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Private"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Default"
+                        });
+                });
+
             modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
                 {
                     b.Property<int>("Id")
@@ -28,6 +60,9 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<DateTime>("AddReminder")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
@@ -73,15 +108,16 @@ namespace RepositoryLayer.Migrations
                         {
                             Id = 1,
                             AddReminder = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Category = "public",
                             Color = "Blue",
-                            CreatedDate = new DateTime(2021, 9, 26, 13, 13, 30, 829, DateTimeKind.Local).AddTicks(7214),
+                            CreatedDate = new DateTime(2021, 9, 28, 13, 1, 36, 313, DateTimeKind.Local).AddTicks(5956),
                             Image = "image1",
                             IsArchive = false,
                             IsNote = false,
                             IsPin = false,
                             IsTrash = false,
                             Message = "This is my first note",
-                            ModifiedDate = new DateTime(2021, 9, 26, 13, 13, 30, 831, DateTimeKind.Local).AddTicks(4785),
+                            ModifiedDate = new DateTime(2021, 9, 28, 13, 1, 36, 314, DateTimeKind.Local).AddTicks(9672),
                             Title = "FirstNote",
                             UserId = 1L
                         });

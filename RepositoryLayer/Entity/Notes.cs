@@ -10,7 +10,9 @@ namespace RepositoryLayer.Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int Id { get; set; }
+        public string Category { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
         public string Image { get; set; }
@@ -20,11 +22,14 @@ namespace RepositoryLayer.Entity
         public DateTime ModifiedDate { get; set; }
         public DateTime AddReminder { get; set; }
         [ForeignKey("Users")]
-        public long UserId { get; set; }    
+        public long UserId { get; set; }
         public bool IsArchive { get; set; }
         public bool IsNote { get; set; }
         public bool IsTrash { get; set; }
-
+        
         public virtual User User { get; set; }
+
+        
+
     }
 }

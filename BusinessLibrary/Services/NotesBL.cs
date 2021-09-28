@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return this._notesRL.ArchiveNote( Id);
+                return this._notesRL.ArchiveNote(Id);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return this._notesRL.EditNotes(editNotesModel,Id);
+                return this._notesRL.EditNotes(editNotesModel, Id);
             }
             catch (Exception ex)
             {
@@ -87,6 +87,18 @@ namespace BusinessLayer.Services
             try
             {
                 return this._notesRL.Get(Id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Notes> NotesByCategory(string Category , long userId)
+        {
+            try
+            {
+                return this._notesRL.NotesByCategory(Category, userId);
             }
             catch (Exception ex)
             {

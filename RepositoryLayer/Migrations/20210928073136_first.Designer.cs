@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210925172536_NotesEntity2")]
-    partial class NotesEntity2
+    [Migration("20210928073136_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,38 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("RepositoryLayer.Entity.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Public"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Private"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Default"
+                        });
+                });
 
             modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
                 {
@@ -30,6 +62,9 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<DateTime>("AddReminder")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
@@ -61,12 +96,33 @@ namespace RepositoryLayer.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Notes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AddReminder = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Category = "public",
+                            Color = "Blue",
+                            CreatedDate = new DateTime(2021, 9, 28, 13, 1, 36, 313, DateTimeKind.Local).AddTicks(5956),
+                            Image = "image1",
+                            IsArchive = false,
+                            IsNote = false,
+                            IsPin = false,
+                            IsTrash = false,
+                            Message = "This is my first note",
+                            ModifiedDate = new DateTime(2021, 9, 28, 13, 1, 36, 314, DateTimeKind.Local).AddTicks(9672),
+                            Title = "FirstNote",
+                            UserId = 1L
+                        });
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entity.User", b =>
@@ -123,6 +179,22 @@ namespace RepositoryLayer.Migrations
                             ModifiedAt = new DateTime(2020, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Password = "1234"
                         });
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
+                {
+                    b.HasOne("RepositoryLayer.Entity.User", "User")
+                        .WithMany("Notes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entity.User", b =>
+                {
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }
