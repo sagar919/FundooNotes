@@ -10,7 +10,7 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210928073136_first")]
+    [Migration("20210929172252_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,36 +21,22 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RepositoryLayer.Entity.Category", b =>
+            modelBuilder.Entity("RepositoryLayer.Entity.Collaboration", b =>
                 {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "Id");
 
-                    b.ToTable("Category");
+                    b.HasIndex("Id");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Public"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Private"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Default"
-                        });
+                    b.ToTable("Collaborations");
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
@@ -101,8 +87,6 @@ namespace RepositoryLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Notes");
 
                     b.HasData(
@@ -110,18 +94,17 @@ namespace RepositoryLayer.Migrations
                         {
                             Id = 1,
                             AddReminder = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Category = "public",
-                            Color = "Blue",
-                            CreatedDate = new DateTime(2021, 9, 28, 13, 1, 36, 313, DateTimeKind.Local).AddTicks(5956),
-                            Image = "image1",
+                            Color = "White",
+                            CreatedDate = new DateTime(2021, 9, 29, 22, 52, 52, 0, DateTimeKind.Local).AddTicks(2519),
+                            Image = "abc.jpg",
                             IsArchive = false,
-                            IsNote = false,
+                            IsNote = true,
                             IsPin = false,
                             IsTrash = false,
-                            Message = "This is my first note",
-                            ModifiedDate = new DateTime(2021, 9, 28, 13, 1, 36, 314, DateTimeKind.Local).AddTicks(9672),
-                            Title = "FirstNote",
-                            UserId = 1L
+                            Message = "Hello, this is my new note",
+                            ModifiedDate = new DateTime(2021, 9, 29, 22, 52, 52, 0, DateTimeKind.Local).AddTicks(7378),
+                            Title = "New Note",
+                            UserId = 15L
                         });
                 });
 
@@ -181,20 +164,33 @@ namespace RepositoryLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
+            modelBuilder.Entity("RepositoryLayer.Entity.Collaboration", b =>
                 {
+                    b.HasOne("RepositoryLayer.Entity.Notes", "Notes")
+                        .WithMany("Collaborations")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RepositoryLayer.Entity.User", "User")
-                        .WithMany("Notes")
+                        .WithMany("Collaborations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Notes");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entity.Notes", b =>
+                {
+                    b.Navigation("Collaborations");
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entity.User", b =>
                 {
-                    b.Navigation("Notes");
+                    b.Navigation("Collaborations");
                 });
 #pragma warning restore 612, 618
         }

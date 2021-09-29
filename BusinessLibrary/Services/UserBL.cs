@@ -28,8 +28,6 @@ namespace BusinessLibrary.Services
             }
         }
 
-       
-
         public ResponseModel ForgotPassword(ForgotPasswordModel model)
         {
             try

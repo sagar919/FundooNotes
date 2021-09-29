@@ -7,7 +7,7 @@ namespace CommonLayer.Model.NotesModels
 {
     public class AddNotesModel
     {
-        [Required]
+        //    [Required]
         public int Id { get; set; }
         [Required]
         public string Category { get; set; }
@@ -27,7 +27,7 @@ namespace CommonLayer.Model.NotesModels
         public DateTime ModifiedDate { get; set; }
         [Required]
         public DateTime AddReminder { get; set; }
-        [Required]
+        //[Required]
         public int UserId { get; set; }
         [Required]
         public bool IsArchive { get; set; }
